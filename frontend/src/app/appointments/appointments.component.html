@@ -1,5 +1,6 @@
 <div class="container">
   <h1>Veterinary Appointments</h1>
+  <a [routerLink]="['/appointments/add']" class="btn btn-primary mb-3">Add New Appointment</a>
   <div class="form-group">
     <label><input type="checkbox" [(ngModel)]="visibleColumns['id']" [ngModelOptions]="{standalone: true}"> ID</label>
     <label><input type="checkbox" [(ngModel)]="visibleColumns['animalName']" [ngModelOptions]="{standalone: true}"> Animal Name</label>
