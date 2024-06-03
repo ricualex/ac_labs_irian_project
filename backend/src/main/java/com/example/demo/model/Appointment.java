@@ -16,7 +16,7 @@ public class Appointment {
     private List<String> services;
     private String diagnostic;
     private String status;
-    
+
 
     public Long getId() {
         return id;
