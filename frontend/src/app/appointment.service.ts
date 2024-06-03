@@ -17,16 +17,18 @@ export interface Appointment {
 })
 export class AppointmentService {
 
-  private getAppointmentsURL = 'http://localhost:8080/appointments/getAllAppointments';
-  private updateAppointmentURL = 'http://localhost:8080/appointments/update';
+  private appointmentsURL = 'http://localhost:8080/appointments';
 
   constructor(private http: HttpClient) { }
 
   getAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(this.getAppointmentsURL);
+    return this.http.get<Appointment[]>(`${this.appointmentsURL}/getAllAppointments`);
   }
 
   updateAppointment(id: number | undefined, appointment: Appointment): Observable<Appointment> {
-    return this.http.put<Appointment>(`${this.updateAppointmentURL}/${id}`, appointment);
+    return this.http.put<Appointment>(`${this.appointmentsURL}/update/${id}`, appointment);
+  }
+  addAppointment(appointment: Appointment): Observable<Appointment> {
+    return this.http.post<Appointment>(`${this.appointmentsURL}/addAppointment`, appointment);
   }
 }
