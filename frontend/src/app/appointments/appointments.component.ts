@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentService, Appointment } from '../appointment.service';
 import { SavedSearchService } from '../saved-search.service';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgForOf} from "@angular/common";
 import {RouterLink} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-appointments',
   templateUrl: './appointments.component.html',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
+    RouterLink,
     FormsModule,
-    NgForOf,
-    RouterLink
+    ReactiveFormsModule,
+    CommonModule
   ],
   styleUrls: ['./appointments.component.css']
 })
@@ -24,7 +24,16 @@ export class AppointmentsComponent implements OnInit {
   savedSearchName: string = '';
   selectedSearchName: string = '';
   selectedValue: string = '';
-  filterValue: string = '';
+  visibleColumns: { [key: string]: boolean } = {
+    id: true,
+    animalName: true,
+    doctorName: true,
+    date: true,
+    services: true,
+    diagnostic: true,
+    status: true,
+    actions: true
+  };
 
   constructor(
     private appointmentService: AppointmentService,
@@ -44,10 +53,10 @@ export class AppointmentsComponent implements OnInit {
   }
 
   applyFilters(): void {
-    const filterValue = this.filterForm.get("filterValue")?.value;
+    const filterValue = this.filterForm.get('filterValue')?.value;
     if (this.selectedValue && filterValue) {
       this.filteredAppointments = this.appointments.filter(appointment =>
-        String((appointment as Partial<Appointment> & { [key: string]: any })[this.selectedValue]).toLowerCase().includes(filterValue.toLowerCase())
+        String((appointment as any)[this.selectedValue]).toLowerCase().includes(filterValue.toLowerCase())
       );
     } else {
       this.filteredAppointments = this.appointments;

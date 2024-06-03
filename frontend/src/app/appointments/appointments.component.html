@@ -1,6 +1,5 @@
 <div class="container">
   <h1>Veterinary Appointments</h1>
-  <label for="filterValue">Filter by {{ selectedValue }}:</label>
   <select [(ngModel)]="selectedValue" name="selectedValue" class="form-control mb-2">
     <option value="id">ID</option>
     <option value="animalName">Animal Name</option>
@@ -26,30 +25,41 @@
       <option *ngFor="let search of savedSearchService.getSavedSearches()" [value]="search.name">{{ search.name }}</option>
     </select>
   </div>
+  <div class="form-group">
+    <label>Visible columns: </label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['id']"> ID</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['animalName']"> Animal Name</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['doctorName']"> Doctor Name</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['date']"> Date</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['services']"> Services</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['diagnostic']"> Diagnostic</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['status']"> Status</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['actions']"> Actions</label>
+  </div>
   <table class="table table-bordered mt-3">
     <thead>
     <tr>
-      <th>ID</th>
-      <th>Animal Name</th>
-      <th>Doctor Name</th>
-      <th>Date</th>
-      <th>Services</th>
-      <th>Diagnostic</th>
-      <th>Status</th>
-      <th>Actions</th>
+      <th *ngIf="visibleColumns['id']">ID</th>
+      <th *ngIf="visibleColumns['animalName']">Animal Name</th>
+      <th *ngIf="visibleColumns['doctorName']">Doctor Name</th>
+      <th *ngIf="visibleColumns['date']">Date</th>
+      <th *ngIf="visibleColumns['services']">Services</th>
+      <th *ngIf="visibleColumns['diagnostic']">Diagnostic</th>
+      <th *ngIf="visibleColumns['status']">Status</th>
+      <th *ngIf="visibleColumns['actions']">Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let appointment of filteredAppointments">
-      <td>{{ appointment.id }}</td>
-      <td>{{ appointment.animalName }}</td>
-      <td>{{ appointment.doctorName }}</td>
-      <td>{{ appointment.date }}</td>
-      <td>{{ appointment.services.join(', ') }}</td>
-      <td>{{ appointment.diagnostic }}</td>
-      <td>{{ appointment.status }}</td>
-      <td>
-        <a [routerLink]="['/appointments/edit', appointment.id]" class="btn btn-secondary">Edit</a>
+      <td *ngIf="visibleColumns['id']">{{ appointment['id'] }}</td>
+      <td *ngIf="visibleColumns['animalName']">{{ appointment['animalName'] }}</td>
+      <td *ngIf="visibleColumns['doctorName']">{{ appointment['doctorName'] }}</td>
+      <td *ngIf="visibleColumns['date']">{{ appointment['date'] }}</td>
+      <td *ngIf="visibleColumns['services']">{{ appointment['services'].join(', ') }}</td>
+      <td *ngIf="visibleColumns['diagnostic']">{{ appointment['diagnostic'] }}</td>
+      <td *ngIf="visibleColumns['status']">{{ appointment['status'] }}</td>
+      <td *ngIf="visibleColumns['actions']">
+        <a [routerLink]="['/appointments/edit', appointment['id']]" class="btn btn-secondary">Edit</a>
       </td>
     </tr>
     </tbody>
