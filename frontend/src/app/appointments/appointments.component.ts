@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService, Appointment } from '../appointment.service';
 import { SavedSearchService } from '../saved-search.service';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterLink} from "@angular/router";
-import {NgForOf, NgIf} from "@angular/common";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NgForOf, NgIf } from '@angular/common';
+
+interface Service {
+  name: string;
+  price: number;
+}
 
 @Component({
   selector: 'app-appointments',
@@ -92,6 +97,10 @@ export class AppointmentsComponent implements OnInit {
       });
       this.applyFilters();
     }
+  }
+
+  formatServices(services: Service[]) {
+    return services.map(service => `${service.name} - ${service.price} lei`).join(', ');
   }
 
   protected readonly Object = Object;
