@@ -3,17 +3,18 @@ import { AppointmentService, Appointment } from '../appointment.service';
 import { SavedSearchService } from '../saved-search.service';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterLink} from "@angular/router";
-import {CommonModule} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-appointments',
   templateUrl: './appointments.component.html',
   standalone: true,
   imports: [
-    RouterLink,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    RouterLink,
+    NgForOf,
+    NgIf
   ],
   styleUrls: ['./appointments.component.css']
 })
@@ -23,7 +24,6 @@ export class AppointmentsComponent implements OnInit {
   filterForm: FormGroup;
   savedSearchName: string = '';
   selectedSearchName: string = '';
-  selectedValue: string = '';
   visibleColumns: { [key: string]: boolean } = {
     id: true,
     animalName: true,
@@ -41,22 +41,33 @@ export class AppointmentsComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.filterForm = this.fb.group({
-      filterValue: ['']
+      filterValue: [''],
+      selectedValue: ['']
     });
   }
 
   ngOnInit(): void {
     this.appointmentService.getAppointments().subscribe((data: Appointment[]) => {
       this.appointments = data;
-      this.filteredAppointments = data;
+      this.sortAppointmentsByDateDesc();
+      this.filteredAppointments = this.appointments;
+    });
+  }
+
+  sortAppointmentsByDateDesc(): void {
+    this.appointments.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateB - dateA;
     });
   }
 
   applyFilters(): void {
     const filterValue = this.filterForm.get('filterValue')?.value;
-    if (this.selectedValue && filterValue) {
+    const selectedValue = this.filterForm.get('selectedValue')?.value;
+    if (selectedValue && filterValue) {
       this.filteredAppointments = this.appointments.filter(appointment =>
-        String((appointment as any)[this.selectedValue]).toLowerCase().includes(filterValue.toLowerCase())
+        String((appointment as any)[selectedValue]).toLowerCase().includes(filterValue.toLowerCase())
       );
     } else {
       this.filteredAppointments = this.appointments;
@@ -65,7 +76,7 @@ export class AppointmentsComponent implements OnInit {
 
   saveSearch(): void {
     const filters = {
-      selectedValue: this.selectedValue,
+      selectedValue: this.filterForm.get('selectedValue')?.value,
       filterValue: this.filterForm.get('filterValue')?.value
     };
     const sort = {};
@@ -75,9 +86,13 @@ export class AppointmentsComponent implements OnInit {
   loadSearch(name: string): void {
     const savedSearch = this.savedSearchService.getSearchByName(name);
     if (savedSearch) {
-      this.selectedValue = savedSearch.filters.selectedValue;
-      this.filterForm.setValue({ filterValue: savedSearch.filters.filterValue });
+      this.filterForm.setValue({
+        selectedValue: savedSearch.filters.selectedValue,
+        filterValue: savedSearch.filters.filterValue
+      });
       this.applyFilters();
     }
   }
+
+  protected readonly Object = Object;
 }
