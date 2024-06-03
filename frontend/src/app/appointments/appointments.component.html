@@ -47,15 +47,15 @@
     </thead>
     <tbody>
     <tr *ngFor="let appointment of filteredAppointments">
-      <td *ngIf="visibleColumns['id']">{{ appointment['id'] }}</td>
-      <td *ngIf="visibleColumns['animalName']">{{ appointment['animalName'] }}</td>
-      <td *ngIf="visibleColumns['doctorName']">{{ appointment['doctorName'] }}</td>
-      <td *ngIf="visibleColumns['date']">{{ appointment['date'] }}</td>
-      <td *ngIf="visibleColumns['services']">{{ appointment['services'].join(', ') }}</td>
-      <td *ngIf="visibleColumns['diagnostic']">{{ appointment['diagnostic'] }}</td>
-      <td *ngIf="visibleColumns['status']">{{ appointment['status'] }}</td>
+      <td *ngIf="visibleColumns['id']">{{ appointment.id }}</td>
+      <td *ngIf="visibleColumns['animalName']">{{ appointment.animalName }}</td>
+      <td *ngIf="visibleColumns['doctorName']">{{ appointment.doctorName }}</td>
+      <td *ngIf="visibleColumns['date']">{{ appointment.date }}</td>
+      <td *ngIf="visibleColumns['services']">{{ formatServices(appointment.services) }}</td>
+      <td *ngIf="visibleColumns['diagnostic']">{{ appointment.diagnostic }}</td>
+      <td *ngIf="visibleColumns['status']">{{ appointment.status }}</td>
       <td *ngIf="visibleColumns['actions']">
-        <a [routerLink]="['/appointments/edit', appointment['id']]" class="btn btn-secondary">Edit</a>
+        <a [routerLink]="['/appointments/edit', appointment.id]" class="btn btn-secondary">Edit</a>
       </td>
     </tr>
     </tbody>

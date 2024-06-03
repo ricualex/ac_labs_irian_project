@@ -2,12 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface Service {
+  name: string;
+  price: number;
+}
+
 export interface Appointment {
   id: number;
   animalName: string;
   doctorName: string;
   date: string;
-  services: string[];
+  services: Service[];
   diagnostic: string;
   status: string;
 }
