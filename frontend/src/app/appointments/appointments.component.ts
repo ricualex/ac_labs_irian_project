@@ -59,7 +59,7 @@ export class AppointmentsComponent implements OnInit {
       selectedValue: this.selectedValue,
       filterValue: this.filterForm.get('filterValue')?.value
     };
-    const sort = {}; // Include sorting logic here if applicable
+    const sort = {};
     this.savedSearchService.saveSearch(this.savedSearchName, filters, sort);
   }
 
@@ -69,7 +69,6 @@ export class AppointmentsComponent implements OnInit {
       this.selectedValue = savedSearch.filters.selectedValue;
       this.filterForm.setValue({ filterValue: savedSearch.filters.filterValue });
       this.applyFilters();
-      // Apply sorting logic if applicable
     }
   }
 }

@@ -16,8 +16,7 @@ public class Appointment {
     private List<String> services;
     private String diagnostic;
     private String status;
-
-    // Getters and Setters
+    
 
     public Long getId() {
         return id;
