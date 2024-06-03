@@ -1,18 +1,23 @@
 <div class="container">
   <h1>Veterinary Appointments</h1>
+  <label for="filterValue">Filter by {{ selectedValue }}:</label>
+  <select [(ngModel)]="selectedValue" name="selectedValue" class="form-control mb-2">
+    <option value="id">ID</option>
+    <option value="animalName">Animal Name</option>
+    <option value="doctorName">Doctor Name</option>
+    <option value="date">Date</option>
+    <option value="services">Services</option>
+    <option value="diagnostic">Diagnostic</option>
+    <option value="status">Status</option>
+  </select>
   <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
     <div class="form-group">
-      <label for="doctorName">Doctor Name</label>
-      <input type="text" id="doctorName" formControlName="doctorName" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="status">Status</label>
-      <input type="text" id="status" formControlName="status" class="form-control">
+      <input type="text" id="filterValue" formControlName="filterValue" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Apply Filters</button>
   </form>
   <div class="form-group mt-3">
-    <input type="text" placeholder="Save search as..." [(ngModel)]="savedSearchName" class="form-control">
+    <input type="text" placeholder="Save search as..." [(ngModel)]="savedSearchName" name="savedSearchName" class="form-control">
     <button (click)="saveSearch()" class="btn btn-secondary mt-2">Save Search</button>
   </div>
   <div class="form-group mt-3">
