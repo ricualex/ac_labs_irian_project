@@ -1,7 +1,27 @@
 <div class="container">
   <h1>Veterinary Appointments</h1>
-  <a [routerLink]="['/appointments/add']" class="btn btn-primary mb-3">Add New Appointment</a>
-  <table class="table table-bordered">
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+    <div class="form-group">
+      <label for="doctorName">Doctor Name</label>
+      <input type="text" id="doctorName" formControlName="doctorName" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <input type="text" id="status" formControlName="status" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Filters</button>
+  </form>
+  <div class="form-group mt-3">
+    <input type="text" placeholder="Save search as..." [(ngModel)]="savedSearchName" class="form-control">
+    <button (click)="saveSearch()" class="btn btn-secondary mt-2">Save Search</button>
+  </div>
+  <div class="form-group mt-3">
+    <label for="savedSearches">Load saved search:</label>
+    <select id="savedSearches" class="form-control" [(ngModel)]="selectedSearchName" (ngModelChange)="loadSearch($event)">
+      <option *ngFor="let search of savedSearchService.getSavedSearches()" [value]="search.name">{{ search.name }}</option>
+    </select>
+  </div>
+  <table class="table table-bordered mt-3">
     <thead>
     <tr>
       <th>ID</th>
@@ -15,7 +35,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let appointment of appointments">
+    <tr *ngFor="let appointment of filteredAppointments">
       <td>{{ appointment.id }}</td>
       <td>{{ appointment.animalName }}</td>
       <td>{{ appointment.doctorName }}</td>
