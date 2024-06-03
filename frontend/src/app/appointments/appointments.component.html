@@ -1,0 +1,31 @@
+<div class="container">
+  <h1>Veterinary Appointments</h1>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Animal Name</th>
+      <th>Doctor Name</th>
+      <th>Date</th>
+      <th>Services</th>
+      <th>Diagnostic</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let appointment of appointments">
+      <td>{{ appointment.id }}</td>
+      <td>{{ appointment.animalName }}</td>
+      <td>{{ appointment.doctorName }}</td>
+      <td>{{ appointment.date }}</td>
+      <td>{{ appointment.services.join(', ') }}</td>
+      <td>{{ appointment.diagnostic }}</td>
+      <td>{{ appointment.status }}</td>
+      <td>
+        <a [routerLink]="['/appointments/edit', appointment.id]" class="btn btn-secondary">Edit</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
