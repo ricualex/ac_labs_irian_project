@@ -1,20 +1,13 @@
 <div class="container">
   <h1>Veterinary Appointments</h1>
-  <div class="form-group">
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['id']" [ngModelOptions]="{standalone: true}"> ID</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['animalName']" [ngModelOptions]="{standalone: true}"> Animal Name</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['doctorName']" [ngModelOptions]="{standalone: true}"> Doctor Name</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['date']" [ngModelOptions]="{standalone: true}"> Date</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['services']" [ngModelOptions]="{standalone: true}"> Services</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['diagnostic']" [ngModelOptions]="{standalone: true}"> Diagnostic</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['status']" [ngModelOptions]="{standalone: true}"> Status</label>
-    <label><input type="checkbox" [(ngModel)]="visibleColumns['actions']" [ngModelOptions]="{standalone: true}"> Actions</label>
-  </div>
+  <a [routerLink]="['/appointments/add']" class="btn btn-primary mb-3">Add New Appointment</a>
   <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
     <div class="form-group">
+      <label>Filter criteria: </label>
       <select formControlName="selectedValue" class="form-control mb-2">
         <option *ngFor="let key of Object.keys(visibleColumns)" [value]="key">{{ key }}</option>
       </select>
+      <label>Filter criteria value: </label>
       <input type="text" id="filterValue" formControlName="filterValue" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Apply Filters</button>
@@ -28,6 +21,16 @@
     <select id="savedSearches" class="form-control" [(ngModel)]="selectedSearchName" (ngModelChange)="loadSearch($event)" [ngModelOptions]="{standalone: true}">
       <option *ngFor="let search of savedSearchService.getSavedSearches()" [value]="search.name">{{ search.name }}</option>
     </select>
+  </div>
+  <div class="form-group">
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['id']" [ngModelOptions]="{standalone: true}"> ID</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['animalName']" [ngModelOptions]="{standalone: true}"> Animal Name</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['doctorName']" [ngModelOptions]="{standalone: true}"> Doctor Name</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['date']" [ngModelOptions]="{standalone: true}"> Date</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['services']" [ngModelOptions]="{standalone: true}"> Services</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['diagnostic']" [ngModelOptions]="{standalone: true}"> Diagnostic</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['status']" [ngModelOptions]="{standalone: true}"> Status</label>
+    <label><input type="checkbox" [(ngModel)]="visibleColumns['actions']" [ngModelOptions]="{standalone: true}"> Actions</label>
   </div>
   <table class="table table-bordered mt-3">
     <thead>
