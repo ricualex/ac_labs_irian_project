@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppointmentService, Appointment } from '../appointment.service';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgIf} from "@angular/common";
+import {FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NgForOf, NgIf} from "@angular/common";
+
+interface Service {
+  name: string;
+  price: number;
+}
 
 @Component({
   selector: 'app-edit-appointment',
@@ -10,7 +15,8 @@ import {NgIf} from "@angular/common";
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   styleUrls: ['./edit-appointment.component.css']
 })
@@ -29,7 +35,7 @@ export class EditAppointmentComponent implements OnInit {
       animalName: ['', Validators.required],
       doctorName: ['', Validators.required],
       date: ['', Validators.required],
-      services: ['', Validators.required],
+      services: this.fb.array([], Validators.required),
       diagnostic: [''],
       status: ['', Validators.required]
     });
@@ -45,19 +51,29 @@ export class EditAppointmentComponent implements OnInit {
           animalName: appointment.animalName,
           doctorName: appointment.doctorName,
           date: appointment.date,
-          services: appointment.services.join(', '),
           diagnostic: appointment.diagnostic,
           status: appointment.status
         });
+
+        const serviceControls = appointment.services.map(service => this.fb.group({
+          name: [service.name, Validators.required],
+          price: [service.price, Validators.required]
+        }));
+        const serviceFormArray = this.fb.array(serviceControls);
+        this.appointmentForm.setControl('services', serviceFormArray);
       }
     });
+  }
+
+  get services(): FormArray {
+    return this.appointmentForm.get('services') as FormArray;
   }
 
   onSubmit(): void {
     const updatedAppointment: Appointment = {
       id: this.appointmentId,
       ...this.appointmentForm.value,
-      services: this.appointmentForm.value.services.split(',').map((service: string) => service.trim())
+      services: this.services.value
     };
 
     if (updatedAppointment.status === "incheiata" && !updatedAppointment.diagnostic.trim()) {
@@ -68,5 +84,16 @@ export class EditAppointmentComponent implements OnInit {
     this.appointmentService.updateAppointment(this.appointmentId, updatedAppointment).subscribe(() => {
       this.router.navigate(['/']);
     });
+  }
+
+  addService(): void {
+    this.services.push(this.fb.group({
+      name: ['', Validators.required],
+      price: ['', Validators.required]
+    }));
+  }
+
+  removeService(index: number): void {
+    this.services.removeAt(index);
   }
 }
